@@ -1,0 +1,8 @@
+FINAL SCORE for a4q2 : 24.0
+
+PENALTY  : late submission => -6
+cur
+contains
+All Tests Passed
+
+Total Raw Grade: 30.0/30

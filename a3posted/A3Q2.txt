@@ -1,0 +1,40 @@
+Assignment 3
+Question 2
+
+Q1	In the loadkeys() method we insert K keys, each of which are made out of L characters at most, to the Trie T1. 
+	As the loadkeys() method consists the insert() method, we have to consider that too. 
+	In the insert() method we first get the prefix, and then fill in the missing nodes starting from the prefix.
+	This entire process steps through K nodes at most.
+	Therefore, Inserting K keys of L length take KL steps.
+	So O() bound of loadkeys() is O(KL).
+
+Q2	When we call the contains() method, we input a key.
+	Let’s say the key is of length L.
+	Then our method goes through K nodes, checking if the conditions are met.
+	So the method takes L steps.
+	Therefore, O() bound of contains is O(L).
+
+Q3	The same steps as explained in Q1 occur.
+	But while using LinkedLists, to travel through the L characters, the algorithm has to go through all the previously recorded nodes in the LinkedList at the parent node.
+	Let’s say the LinkedList contains at most C nodes.
+	Then, the algorithm will go through LC nodes.
+	Therefore, Inserting K keys of L length will take K(LC) steps.
+	So, O() bound of loadkeys will be O(KLC).
+
+Q4	Again, to get to the current node, the algorithm will have to go through all the previously recorded nodes in the LinkedList at the parent node.
+	Therefore, it will take max KC steps (Assuming LinkedList contains at most C nodes)
+	So, O() bound of contains() will be O(LC).
+
+Q5	We are inserting K keys in the BST.
+	If the BST is not well balanced, then all the nodes are either smaller or greater than the node we would like to insert.
+	Therefore we have to compare L letters with (K-1) keys.
+	The algorithm will then have to go through ((K * (K-1))/2) * L steps. 
+	Therefore, O() bound of loadkeys() will be O((K^2)L).
+
+Q6	If the BST is well balanced then the algorithm will take log2(K) steps. 
+	Therefore, Omega() bound of loadkeys() will be Omega(L(log2(K))).
+
+Q7	The O() bound of contains() in an unbalanced BST will be O(LK) as we have to check every letter of each key, hence K*L steps.
+
+Q8	The Omega() of contains() in a balanced BST will be Omega(L) because if the key being searched for is L steps
+		 

@@ -1,0 +1,90 @@
+package a4q2;
+//Name :- Zaid Yahya
+//Student ID :- 260682110
+import java.util.LinkedList;
+import java.util.Set;
+import java.util.HashMap;
+import java.util.*;
+import java.util.Set;
+
+public class ShapeGraph extends Graph<Shape> { 
+ 
+ public ShapeGraph() {
+ }
+  
+ public void resetVisited() {
+  Set<String>  vertexKeySet =  vertexMap.keySet(); 
+  for( String key : vertexKeySet ){
+   vertexMap.get(key).visited = false;
+  }    
+ }
+ 
+ 
+ /**
+  * Returns a list of lists, each inner list is a path to a node that can be reached from a given node
+  * if the total area along the path to that node is greater than the threshold.
+  * Your solution must be a recursive, depth first implementation for a graph traversal.
+  * The Strings in the returned list of lists should be the vertex labels (keys).
+  */
+ 
+ public LinkedList<LinkedList<String>> traverseFrom(String key, float threshold)
+ {
+  LinkedList<LinkedList<String>> masterList = new LinkedList<LinkedList<String>>();
+  
+  //   ADD YOUR CODE HERE.  (IF YOU WISH TO ADD A HELPER METHOD, THEN ADD IT AFTER THIS METHOD.)
+  Vertex<Shape> initial = this.vertexMap.get(key);
+  masterList = recursiveHelper(initial, threshold, 0, masterList);
+  //resets each vertex to non-visited
+  this.resetVisited();
+
+  return masterList;
+ } 
+ 
+ //Path to current vertex
+ private Stack<String> currPath = new Stack<String>();
+ //List to store vertex if on path
+ private LinkedList<String> contains = new LinkedList<String>();
+ 
+ //Helper method to traverse the graph, and return all paths that meet criteria
+ private LinkedList<LinkedList<String>> recursiveHelper(Vertex<Shape> v, float threshold, float areaCount, LinkedList<LinkedList<String>> masterList){
+   //Set vertex to visited
+   v.setVisited(true);
+   //Add keys to both stack and LinkedList
+   currPath.push(v.getKey());
+   contains.add(v.getKey());
+   
+   //Ensures only those paths that meet criteria are added to masterList
+   if(areaCount + v.element.getArea() > threshold){
+     Stack<String> clone = (Stack<String>) currPath.clone();
+     Stack<String> vertexStack = new Stack<String>();
+     LinkedList<String> validPaths = new LinkedList<String>();
+     while(!clone.isEmpty())
+       vertexStack.push(clone.pop());
+       while(!vertexStack.isEmpty()){
+         validPaths.add(vertexStack.pop());
+     }
+     masterList.add(validPaths);
+   }
+   
+   //Recursive calls to ensure all children have been visited
+   for(Edge e:v.adjList){
+     if(!contains.contains(e.getEndVertex().getKey()) && e.getEndVertex().getVisited() == false){
+       recursiveHelper(e.getEndVertex(), threshold, areaCount + v.element.getArea(), masterList);
+     }
+   }
+  
+   currPath.pop();
+   contains.remove(contains.indexOf(v.getKey()));
+ }
+}
+   
+   return masterList;
+ }
+}
+
+
+
+
+
+
+

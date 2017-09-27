@@ -1,0 +1,116 @@
+import java.io.*;
+import java.util.*;
+
+import a3posted.*;
+
+public class TestTextFile {
+ public static ArrayList<String> readWordsFromFile(String filename) {
+  ArrayList<String> words = new ArrayList<String>();
+  try {
+   File file = new File(filename);
+   Scanner scanner = new Scanner(file);
+   // Strip non-alphanumeric \\W
+   scanner.useDelimiter("\\W+");
+   while (scanner.hasNext()) {
+    words.add(scanner.next());
+   }
+   scanner.close();
+  } catch (Exception e) {
+   System.out.println(e.getMessage());
+   System.exit(1);
+  }
+  return words;
+ }
+
+ public static ArrayList<String> readWordsFromFile(String filename,
+   int skipEveryXTerms) {
+  ArrayList<String> words = new ArrayList<String>();
+  try {
+   File file = new File(filename);
+   Scanner scanner = new Scanner(file);
+   // Strip non-alphanumeric \\W
+   scanner.useDelimiter("\\W+");
+   int skipper = 0;
+   while (scanner.hasNext()) {
+    if (skipper % skipEveryXTerms == 0) {
+     words.add(scanner.next());
+     skipper++;
+    } else {
+     skipper++;
+     String s1, s2;
+     if (scanner.hasNext())
+      s1 = scanner.next();
+     else
+      s1 = "";
+
+     if (scanner.hasNext())
+      s2 = scanner.next();
+     else
+      s2 = "";
+
+     words.add(s1 + (char) (Math.random() * 256) + s2);
+     words.add(s1 + (char) (Math.random() * 256) + s1);
+     words.add(s2 + (char) (Math.random() * 256) + s2);
+     words.add(s2 + (char) (Math.random() * 256) + s1);
+
+    }
+   }
+   scanner.close();
+  } catch (Exception e) {
+   System.out.println(e.getMessage());
+   System.exit(1);
+  }
+
+  return words;
+ }
+
+ public static void main(String[] args) {
+
+  int toskip = 3;
+
+  // insert the file paths here
+  String textInput = "./wordlist_60k.csv";
+  String autoCompleteTestFile = "./wordlist_60k.csv";
+  // String containsTestFile= "./wordlist_60k.csv";
+  // String longestPrefixTestFile = "./wordlist_60k.csv";
+  ArrayList<String> input = new ArrayList<String>();
+  ArrayList<String> containsTestCases = new ArrayList<String>();
+  ArrayList<String> autoCompleteTestCases = new ArrayList<String>();
+  ArrayList<String> longestPrefixTestCases = new ArrayList<String>();
+  Trie trie = new Trie();
+  // the lists are filled with the corresponding input
+  input.addAll(readWordsFromFile(textInput, toskip));
+  autoCompleteTestCases.addAll(readWordsFromFile(autoCompleteTestFile));
+  containsTestCases.addAll(autoCompleteTestCases);
+  longestPrefixTestCases.addAll(autoCompleteTestCases);
+  // loads tree (also tests insert method)
+  trie.loadKeys(input);
+  // prints all keys in the trie
+  //System.out.println("Keys in the trie: " + input);
+  // test runs for each method
+  // contains test
+  
+  System.out.println("Testing contains()");
+  
+  for (String test : containsTestCases) {
+   // System.out.println("Result of contains("+test+"): "+trie.contains(test)+", expected result: "+input.contains(test));
+   if (trie.contains(test) != input.contains(test))
+    System.out.println("ERROR FOR TEST CASE: " + test);
+  }
+
+  // longestPrefix test
+  System.out.println("Testing getPrefix()");
+
+  for (String test : longestPrefixTestCases) {
+   // System.out.println("Result of getPrefix("+test+"): "+trie.getPrefix(test));
+  }
+
+  // autocomplete test
+  System.out.println("Testing getAllPrefixMatches()");
+
+  for (String test : autoCompleteTestCases) {
+   // System.out.println("Result of getAllPrefixMatches("+test+"): "+trie.getAllPrefixMatches(test));
+  }
+  // System.out.println("Good for you, no errors");
+ }
+}
